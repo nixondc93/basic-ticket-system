@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Layout from '../components/Layout'
 import Router from 'next/router'
 
-const Draft = () => {
+const Create = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [authorEmail, setAuthorEmail] = useState('')
@@ -16,7 +16,7 @@ const Draft = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      await Router.push('/drafts')
+      await Router.push('/')
     } catch (error) {
       console.error(error)
     }
@@ -27,7 +27,7 @@ const Draft = () => {
       <div className="page">
         <form
           onSubmit={submitData}>
-          <h1>Create Draft</h1>
+          <h1>Create Ticket</h1>
           <input
             autoFocus
             onChange={e => setTitle(e.target.value)}
