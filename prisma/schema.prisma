@@ -38,6 +38,7 @@ model Response {
   id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   author    User    @relation(fields: [authorId], references: [id])
   authorId  String  @db.Uuid
-  ticket Ticket @relation(fields: [ticketId], references: [id])
-  ticketId String   @db.Uuid
+  ticket    Ticket @relation(fields: [ticketId], references: [id])
+  ticketId  String   @db.Uuid
+  content   String
 }
