@@ -1,4 +1,3 @@
-import ReactMarkdown from 'react-markdown'
 import Layout from '../../components/Layout'
 import Router from 'next/router'
 import { makeSerializable } from '../../lib/util'
@@ -29,7 +28,6 @@ const Post = props => {
       <div className="page">
         <h2>{title}</h2>
         <small>By {authorName}</small>
-        <ReactMarkdown children={props.content} />
         <div className="actions">
           {!props.published && (
             <button onClick={() => publish(props.id)}>Publish</button>
