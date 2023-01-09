@@ -5,6 +5,7 @@ import prisma from '../../../lib/prisma'
 // Optional fields in body: content
 export default async function handle(req, res) {
   const { title, content, authorEmail } = req.body
+
   const result = await prisma.ticket.create({
     data: {
       title: title,

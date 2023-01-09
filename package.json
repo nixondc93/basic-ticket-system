@@ -7,7 +7,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next --turbo",
+    "dev": "next",
     "build": "next build",
     "start": "next start"
   },

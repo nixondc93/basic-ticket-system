@@ -1,7 +1,8 @@
-import Layout from '../../components/Layout'
 import Router from 'next/router'
 import { makeSerializable } from '../../lib/util'
 import prisma from '../../lib/prisma';
+import { Box, Button, FormControl, Heading, Text, Textarea } from '@chakra-ui/react';
+import Navigation from '../../components/Naviagtion';
 
 async function publish(id) {
   await fetch(`/api/publish/${id}`, {
@@ -10,61 +11,55 @@ async function publish(id) {
   await Router.push('/')
 }
 
-async function destroy(id) {
-  await fetch(`/api/post/${id}`, {
-    method: 'DELETE',
-  })
-  await Router.push('/')
-}
-
 const Post = props => {
-  let title = props.title
-  if (!props.published) {
-    title = `${title} (Draft)`
+  const { title, content, author, responses} = props
+  const authorName = author ? author.name : 'Unknown author'
+
+  const submitResponse = e => {
+    console.log('target: ', e.target)
   }
-  const authorName = props.author ? props.author.name : 'Unknown author'
+
   return (
-    <Layout>
-      <div className="page">
-        <h2>{title}</h2>
-        <small>By {authorName}</small>
-        <div className="actions">
-          {!props.published && (
-            <button onClick={() => publish(props.id)}>Publish</button>
-          )}
-          <button onClick={() => destroy(props.id)}>Delete</button>
-        </div>
-      </div>
-      <style jsx>{`
-        .page {
-          background: white;
-          padding: 2rem;
-        }
-
-        .actions {
-          margin-top: 2rem;
-        }
-
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
-        }
-
-        button + button {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </Layout>
+    <Box>
+      <Navigation />
+      <Heading marginTop={8} size='lg'>{title}</Heading>
+      <Text>From: {authorName}</Text>
+      <Text>{content}</Text>
+      <Box>
+        {responses.length > 0 && (
+          <Heading size='md'>
+            Responses:
+          </Heading>
+        )}
+        { responses?.map(response => (
+          <Box  key={response.id}>
+              <Text>From:</Text>
+              <Text>{response.content}</Text>
+          </Box>
+        ))}
+      </Box>
+      <Box>
+        <Heading marginTop={6} size='md'>Reply:</Heading>
+        <Box marginTop={4}>
+          <form onSubmit={submitResponse}>
+            <FormControl>
+              <Textarea name='content'/>
+            </FormControl>
+            <Box marginTop={2}>
+              <Button type='submit'>Submit</Button>
+            </Box>
+          </form>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
 export const getServerSideProps = async (context) => {
   const id = Array.isArray(context.params.id) ? context.params.id[0] : context.params.id
-  const post = await prisma.post.findUnique({
+  const post = await prisma.ticket.findUnique({
     where: { id },
-    include: { author: true },
+    include: { author: true, responses: true },
   })
   return { props: { ...makeSerializable(post) } }
 }

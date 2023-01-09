@@ -1,10 +1,12 @@
+import { Box } from "@chakra-ui/react"
+import Navigation from "../components/Naviagtion"
 
 
 const Admin = props => { 
   return (
-    <div>
-
-    </div>
+    <Box>
+      <Navigation />
+    </Box>
   )
 }
 
