@@ -14,7 +14,6 @@ const Create = () => {
       if (sessionUser) {
         authorEmail = JSON.parse(sessionUser)?.email
       }
-      console.log(authorEmail)
 
       if (!authorEmail) {
         toast({

@@ -1,17 +1,16 @@
 import NextLink from 'next/link'
-import { makeSerializable } from '../lib/util'
-import prisma from '../lib/prisma';
+import { makeSerializable } from '../../lib/util'
+import prisma from '../../lib/prisma';
 import { Box, Heading, Text, Divider, Flex, Link } from '@chakra-ui/react';
-import Navigation from '../components/Naviagtion';
-import { Status } from '@prisma/client'
+import Navigation from '../../components/Naviagtion';
 
-const Admin = props => {
+const MyTickets = props => {
   const { tickets } = props
-  
+
   return (
     <Box>
       <Navigation />
-      <Heading marginTop={8}>Tickets</Heading>
+      <Heading marginTop={8}>My tickets</Heading>
       <Box marginTop={4}>
         {
           tickets?.map(ticket => (
@@ -40,12 +39,13 @@ const Admin = props => {
 }
 
 export const getServerSideProps = async (context) => {
+  const authorId = Array.isArray(context.params.userId) ? context.params.userId[0] : context.params.userId
   const tickets = await prisma.ticket.findMany({
     include: { author: true },
     orderBy: { updatedAt: 'desc'},
-    where: { status: { not: Status.RESOLVED }},
+    where: { authorId }
   })
   return { props: { tickets: [...makeSerializable(tickets)] } }
 }
 
-export default Admin
+export default MyTickets

@@ -16,7 +16,7 @@ const SignUp = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-
+      
       const userData = await userResponse.json()
       window.sessionStorage.setItem("user", JSON.stringify(userData))
 

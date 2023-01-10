@@ -1,9 +1,15 @@
+import { useEffect, useState } from 'react';
 import { Box, Flex, Link, Center } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 
 const Navigation = () => {
-  const router = useRouter()
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const sessionUser = window.sessionStorage.getItem('user')
+    if (sessionUser) setUser(JSON.parse(sessionUser))
+  }, [])
+
 
   return(
     <nav>
@@ -19,6 +25,16 @@ const Navigation = () => {
             <Box>
               <Link as={NextLink} href="/create">Create a ticket</Link>
             </Box>
+            { user.isAdmin === false && (
+              <Box>
+                <Link as={NextLink} href={`/myTickets/${user.id}`}>My tickets</Link>
+              </Box>
+            )}
+            { user.isAdmin === true && (
+              <Box>
+                <Link as={NextLink} href="/admin">Tickets backlog</Link>
+              </Box>
+            )}
           </Flex>
         </Center>
       </Box>
