@@ -32,7 +32,7 @@ const Navigation = () => {
             )}
             { user.isAdmin === true && (
               <Box>
-                <Link as={NextLink} href="/admin">Tickets backlog</Link>
+                <Link as={NextLink} href="/admin">Ticket backlog</Link>
               </Box>
             )}
           </Flex>
